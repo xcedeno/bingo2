@@ -5,6 +5,8 @@ Dim Hoja As Worksheet
 Dim Rango As Range
 Dim Objeto As ChartObject
 Dim Ancho As Long, Alto As Long
+Dim contador As Integer
+    Dim nombreArchivo As String
 
 'Establecemos la hoja y el rango de trabajo
 
@@ -19,6 +21,14 @@ Rango.CopyPicture xlScreen, xlPicture
 Ancho = Rango.Width
 Alto = Rango.Height
 
+' Comprobamos si el archivo ya existe
+    contador = 1
+    Do While Dir("CARTON" & contador & ".jpg") <> ""
+        contador = contador + 1
+    Loop
+
+nombreArchivo = "CARTON" & contador & ".jpg"
+
 Set Objeto = Hoja.ChartObjects.Add(Left:=0, Top:=0, Width:=Ancho, Height:=Alto)
 Objeto.Activate
 
@@ -27,7 +37,7 @@ Objeto.Activate
 With Objeto.Chart
 
 .Paste
-.Export Filename:="CARTON.jpg", Filtername:="JPG"
+.Export Filename:=nombreArchivo, Filtername:="JPG"
 
 End With
 

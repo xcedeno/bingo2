@@ -5,10 +5,12 @@ Dim Hoja As Worksheet
 Dim Rango As Range
 Dim Objeto As ChartObject
 Dim Ancho As Long, Alto As Long
+Dim contador As Integer
+    Dim nombreArchivo As String
 
 'Establecemos la hoja y el rango de trabajo
 
-Range("Q1").Value = Range("Q1").Value + 1
+
 
 Set Hoja = ActiveSheet
 Set Rango = Range("A1:U31")
@@ -18,21 +20,31 @@ Set Rango = Range("A1:U31")
 Rango.CopyPicture xlScreen, xlPicture
 Ancho = Rango.Width
 Alto = Rango.Height
-
 Set Objeto = Hoja.ChartObjects.Add(Left:=0, Top:=0, Width:=Ancho, Height:=Alto)
 Objeto.Activate
+
+' Comprobamos si el archivo ya existe
+    contador = 1
+    Do While Dir("CARTON" & contador & ".jpg") <> ""
+        contador = contador + 1
+    Loop
+
+nombreArchivo = "CARTON" & contador & ".jpg"
+
+
 
 'Exportamos el objeto a un archivo de imagen .jpg a la ubicación por defecto (Mis Documentos)
 
 With Objeto.Chart
 
 .Paste
-.Export Filename:="CARTON.jpg", Filtername:="JPG"
+.Export Filename:=nombreArchivo, Filtername:="JPG"
 
 End With
 
 'Borramos el objeto de la hoja
 
 Objeto.Delete
+Range("Q1").Value = Range("Q1").Value + 1
 
 End Sub

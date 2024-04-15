@@ -1,0 +1,58 @@
+
+
+Sub CREARIMAGENX10()
+
+'Dimensionamos las variables
+
+Dim Hoja As Worksheet
+Dim Rango As Range
+Dim Objeto As ChartObject
+Dim Ancho As Long, Alto As Long
+Dim contador As Integer
+    Dim nombreArchivo As String
+
+'Establecemos la hoja y el rango de trabajo
+
+
+
+Set Hoja = ActiveSheet
+Set Rango = Range("A1:U31")
+ For i = 1 To 10
+
+'Creamos el objeto imagen
+
+Rango.CopyPicture xlScreen, xlPicture
+Ancho = Rango.Width
+Alto = Rango.Height
+
+Set Objeto = Hoja.ChartObjects.Add(Left:=0, Top:=0, Width:=Ancho, Height:=Alto)
+Objeto.Activate
+
+' Comprobamos si el archivo ya existe
+    contador = 1
+    Do While Dir("CARTON" & contador & ".jpg") <> ""
+        contador = contador + 1
+    Loop
+
+nombreArchivo = "CARTON" & contador & ".jpg"
+
+
+'Exportamos el objeto a un archivo de imagen .jpg a la ubicación por defecto (Mis Documentos)
+
+With Objeto.Chart
+
+.Paste
+.Export Filename:=nombreArchivo, Filtername:="JPG"
+
+End With
+
+'Borramos el objeto de la hoja
+
+Objeto.Delete
+Application.Wait Now + TimeValue("00:00:1")
+
+Range("Q1").Value = Range("Q1").Value + 1
+Next i
+
+End Sub
+
